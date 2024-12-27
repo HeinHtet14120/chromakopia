@@ -1,6 +1,7 @@
 import logo from './assets/logo.png'
 import logo3 from './assets/chroma-flyer-global.jpg'
 import dex from './assets/dex.png'
+import { useState } from 'react';
 const content = {
     text: "Chromakopia is an innovative cryptocurrency designed to revolutionize the way feliciathegoat and fans interact. By combining blockchain technology with the vibrant energy of world tours, Chromakopia aims to create a decentralized ecosystem that enhances fan experiences while empowering artists with new revenue streams.",
     highlightWords: {
@@ -45,6 +46,18 @@ const content = {
 };
 
 const Page = () => {
+    const [copied, setCopied] = useState(false);
+    const text = "8dxV42fuPWXQ8Ds75qEjAB3tqXxppezL7QEN5zMapump";
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
     const addHighlights = (text: string) => {
         const words = text.split(' ');
         return words.map((word, index) => {
@@ -71,7 +84,23 @@ const Page = () => {
                 <h1 className="w-[400px] cursor-default leading-8 font-fira text-md mt-10 text-center text-black font-bold">
                     {addHighlights(content.text)}
                 </h1>
+                
             </div>
+            <div className="relative group">
+            <p 
+                onClick={handleCopy} 
+                className="cursor-pointer text-center text-lg text-black font-fira hover:text-white transition-colors duration-300"
+            >
+                {text}
+            </p>
+            <span 
+                className={`absolute left-1/2 -translate-x-1/2 -top-8 px-2 py-1 bg-black text-white text-sm rounded transition-opacity duration-300 ${
+                    copied ? 'opacity-100' : 'opacity-0'
+                }`}
+            >
+                Copied!
+            </span>
+        </div>
             <div className="h-[80vh] flex flex-col items-center justify-center">
     <iframe 
         src="https://open.spotify.com/embed/album/0U28P0QVB1QRxpqp5IHOlH?utm_source=generator" 
